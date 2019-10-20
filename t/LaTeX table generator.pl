@@ -14,11 +14,26 @@ set_script_options(@ARGV);
 valid_separators();
 my @dataTable=load_data_from_file();
 valid_rows_size();
+if($transposition eq 1) {
+    @dataTable = transpose();
+}
 
 
 
 
 my $val = 0;
+sub transpose{
+    if(scalar(@dataTable) eq 0) {
+        return @dataTable;
+    }
+    my @matrix;
+    for my $row (0..@dataTable-1) {
+        for my $col (0..@{$dataTable[$row]}-1) {
+            $matrix[$col][$row] = $dataTable[$row][$col];
+        }
+    }
+    return @matrix;
+}
 sub valid_rows_size{
     if(scalar(@dataTable) eq 0){
         print("empty table\n");
