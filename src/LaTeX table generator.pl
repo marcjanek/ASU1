@@ -22,7 +22,7 @@ save_data(create_output_rows());
 
 sub save_data{
     my $output_file;
-    open($output_file, '>', 't/out.txt');
+    open($output_file, '>', 'src/out.txt');
     print $output_file join("\n",@_);
     close ($output_file);
 }
@@ -85,7 +85,7 @@ sub valid_rows_size{
 }
 sub load_data_from_file{
     my $input_file;
-    open ($input_file, 't/in.txt') or die("$! can\'t be opened\n");
+    open ($input_file, 'src/in.txt') or die("$! can\'t be opened\n");
     my $data = join('', <$input_file>);
     $data =~ s/\s//g;
 
