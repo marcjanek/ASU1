@@ -10,40 +10,74 @@ my $transposition = 0;
 
 my @separators_row = ();
 my @separators_col = ();
+
 set_script_options(@ARGV);
 valid_separators();
 my @dataTable=load_data_from_file();
 valid_rows_size();
-if($transposition eq 1) {
-    @dataTable = transpose();
+@dataTable = transpose() if($transposition eq 1);
+save_data(create_output_rows());
+
+#subs
+
+sub save_data{
+    my $output_file;
+    open($output_file, '>', 't/out.txt');
+    print $output_file join("\n",@_);
+    close ($output_file);
 }
-
-
-
-
-my $val = 0;
-sub transpose{
-    if(scalar(@dataTable) eq 0) {
-        return @dataTable;
+sub create_output_rows{
+    my @rows;
+    #set data rows and add header row
+    for (my $idx = 0; $idx < @dataTable; $idx++) {
+        my @row = @{$dataTable[$idx]};
+        $rows[$idx+2]=($header_row eq 1 ? '& ' : '').join(' & ',@row).' \\\\ \hline';
     }
+    #set header column
+    if($header_col eq 1){
+        $rows[1] = ($header_row eq 1 ? '& ' : '')."& "x(@{$dataTable[0]}-1).'\\\\ \hline';
+    } else{
+        #$rows[1] = '';
+    }
+    #set begins
+    $rows[0] = '\documentclass{article}\begin{document}\begin{tabular}{ |'
+        .' c |'x(@{$dataTable[0]}-1+ ($header_col eq 1 ? 1:0));
+    if($summary_col eq 1){
+        $rows[0] .='|';
+    }
+
+    $rows[0] .= ' c |} \hline';
+    #set summary row
+    if($summary_row eq 1){
+        $rows[@dataTable] .= ' \hline';
+    }
+    #set ends
+    $rows[@dataTable+2] = '\end{tabular}\end{document}';
+
+    return @rows;
+}
+sub transpose{
+    return @dataTable if(@dataTable eq 1);
     my @matrix;
     for my $row (0..@dataTable-1) {
         for my $col (0..@{$dataTable[$row]}-1) {
             $matrix[$col][$row] = $dataTable[$row][$col];
         }
     }
-    return @matrix;
+    @matrix;
 }
 sub valid_rows_size{
-    if(scalar(@dataTable) eq 0){
-        print("empty table\n");
-    } elsif(scalar(@dataTable) eq 1){
-        print("one row table\n");
+    if(@dataTable eq 0){
+        print("table is empty, can't create LaTeX table\n");
+        exit(0);
     } else {
-        for my $i (1..(scalar(@dataTable)-1)){
-            if(scalar(@{$dataTable[0]}) ne scalar(@{$dataTable[$i]})){
-                print("size of each row must be equal, when row with index 0 and size = ".scalar(@{$dataTable[0]})
-                    ." not equals row with index $i and size = ".scalar(@{$dataTable[$i]})."\n");
+        for my $i (1..(@dataTable-1)){
+            if(@{$dataTable[0]} ne @{$dataTable[$i]}){
+                print("size of each row must be equal, when row with index 0 and size = "
+                    .scalar(@{$dataTable[0]})
+                    ." not equals row with index $i and size = "
+                    .scalar(@{$dataTable[$i]})
+                    ."\n");
                 exit(0);
             }
         }
@@ -58,9 +92,9 @@ sub load_data_from_file{
     my @separated_data_rows = split(/[join('',@separators_row)]/, $data);
     my $separators_col_s = join('',@separators_col);
     my @table;
-    for my $i (0..(scalar(@separated_data_rows)-1)){
+    for my $i (0..(@separated_data_rows-1)){
         my @cells = split(/[$separators_col_s]/, $separated_data_rows[$i]);
-        for my $j (0..(scalar(@cells)-1)){
+        for my $j (0..(@cells-1)){
             $table[$i][$j]= $cells[$j];
         }
     }
@@ -68,11 +102,11 @@ sub load_data_from_file{
     return @table;
 }
 sub valid_separators{
-    if(scalar @separators_row eq 0){
+    if( @separators_row eq 0){
         print("arguments must contain separators for rows\n");
         exit(0);
     }
-    if(scalar @separators_row eq 0){
+    if(@separators_row eq 0){
         print("arguments must contain separators for rows\n");
         exit(0);
     }
@@ -87,7 +121,6 @@ sub valid_separators{
     }
 }
 sub set_script_options{
-
     foreach my $word (@_){
         if ($word eq '-sr'){
             $summary_row = 1;
