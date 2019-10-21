@@ -17,7 +17,6 @@ my @dataTable=load_data_from_file();
 valid_rows_size();
 @dataTable = transpose() if($transposition eq 1);
 save_data(create_output_rows());
-
 #subs
 
 sub save_data{
@@ -30,22 +29,17 @@ sub create_output_rows{
     my @rows;
     #set data rows and add header row
     for (my $idx = 0; $idx < @dataTable; $idx++) {
-        my @row = @{$dataTable[$idx]};
-        $rows[$idx+2]=($header_row eq 1 ? '& ' : '').join(' & ',@row).' \\\\ \hline';
+        $rows[$idx+2]=($header_row eq 1 ? '& ' : '').join(' & ',@{$dataTable[$idx]}).' \\\\ \hline';
     }
     #set header column
-    if($header_col eq 1){
-        $rows[1] = ($header_row eq 1 ? '& ' : '')."& "x(@{$dataTable[0]}-1).'\\\\ \hline';
-    } else{
-        #$rows[1] = '';
+    if($header_col eq 1) {
+        $rows[1] = ($header_row eq 1 ? '& ' : '') . "& " x (@{$dataTable[0]} - 1) . '\\\\ \hline';
     }
     #set begins
-    $rows[0] = '\documentclass{article}\begin{document}\begin{tabular}{ |'
-        .' c |'x(@{$dataTable[0]}-1+ ($header_row eq 1 ? 1:0));
-    if($summary_col eq 1){
-        $rows[0] .='|';
-    }
-
+    $rows[0] = '\documentclass{article}\begin{document}\begin{tabular}{';
+    $rows[0] .= ' |' if($header_row eq 1 or ((@{$dataTable[0]}-1+ ($header_row eq 1 ? 1:0)) ne 0));
+    $rows[0] .= ' c |'x(@{$dataTable[0]}-1+ ($header_row eq 1 ? 1:0));
+    $rows[0] .='|' if(($summary_col eq 1 ) or ((@{$dataTable[0]} -1+($header_row eq 1 ? 1:0) ) eq 0));
     $rows[0] .= ' c |}';
     $rows[0] .= ' \hline' if($header_col eq 1);
     #set summary row
@@ -54,7 +48,7 @@ sub create_output_rows{
     }
     #set ends
     $rows[@dataTable+2] = '\end{tabular}\end{document}';
-
+    $rows[1] = '\hline' if(!defined $rows[1]);
     return @rows;
 }
 sub transpose{
