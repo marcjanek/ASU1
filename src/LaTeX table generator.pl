@@ -41,12 +41,13 @@ sub create_output_rows{
     }
     #set begins
     $rows[0] = '\documentclass{article}\begin{document}\begin{tabular}{ |'
-        .' c |'x(@{$dataTable[0]}-1+ ($header_col eq 1 ? 1:0));
+        .' c |'x(@{$dataTable[0]}-1+ ($header_row eq 1 ? 1:0));
     if($summary_col eq 1){
         $rows[0] .='|';
     }
 
-    $rows[0] .= ' c |} \hline';
+    $rows[0] .= ' c |}';
+    $rows[0] .= ' \hline' if($header_col eq 1);
     #set summary row
     if($summary_row eq 1){
         $rows[@dataTable] .= ' \hline';
