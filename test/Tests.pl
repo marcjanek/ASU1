@@ -2,12 +2,10 @@
 use strict;
 use warnings FATAL => 'all';
 use Test::Simple;
-use Test::More tests => 64;
+use Test::More tests => 73;
 use IPC::System::Simple qw(system capture);
 
-
-
-#tests
+#tests for types of LaTeX table
 test((' -tr -hc -hr -sr -sc -c_- -c_. -r_; -r_\'', '1;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c||c|}\\hline&\\\\\\hline\\hline&1\\\\\\hline\\end{tabular}\\end{document}"));
 test((' -hc -hr -sr -sc -c_- -c_. -r_; -r_\'', '1;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c||c|}\\hline&\\\\\\hline\\hline&1\\\\\\hline\\end{tabular}\\end{document}"));
 test((' -tr -hr -sr -sc -c_- -c_. -r_; -r_\'', '1;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c||c|}\\hline&1\\\\\\hline\\end{tabular}\\end{document}"));
@@ -73,40 +71,54 @@ test((' -hc -c_- -c_. -r_; -r_\'', '0-1-2-3-4;10-11-12-13-14;20-21-22-23-24;', "
 test((' -tr -c_- -c_. -r_; -r_\'', '0-1-2-3-4;10-11-12-13-14;20-21-22-23-24;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c|}\\hline0&10&20\\\\\\hline1&11&21\\\\\\hline2&12&22\\\\\\hline3&13&23\\\\\\hline4&14&24\\\\\\hline\\end{tabular}\\end{document}"));
 test((' -c_- -c_. -r_; -r_\'', '0-1-2-3-4;10-11-12-13-14;20-21-22-23-24;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c|c|c|}\\hline0&1&2&3&4\\\\\\hline10&11&12&13&14\\\\\\hline20&21&22&23&24\\\\\\hline\\end{tabular}\\end{document}"));
 
+#tests for separators
+test((' -tr -hc -hr -sr -sc -c_- -c_. -r_; -r_\'', '0.1-2.3-4\'10.11-12.13-14;20-21.22.23-24\'', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c||c|}\\hline&&&\\\\\\hline&0&10&20\\\\\\hline&1&11&21\\\\\\hline&2&12&22\\\\\\hline&3&13&23\\\\\\hline\\hline&4&14&24\\\\\\hline\\end{tabular}\\end{document}"));
+test((' -tr -hc -hr -sr -sc -c_- -c_. -r_;', '0-1.2-3.4;10.11-12.13-14;20.21-22-23-24;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c||c|}\\hline&&&\\\\\\hline&0&10&20\\\\\\hline&1&11&21\\\\\\hline&2&12&22\\\\\\hline&3&13&23\\\\\\hline\\hline&4&14&24\\\\\\hline\\end{tabular}\\end{document}"));
+test((' -tr -hc -hr -sr -sc -c_- -c_. -r_\'', '0-1.2-3.4\'10-11.12-13.14\'20-21.22-23-24\'', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c||c|}\\hline&&&\\\\\\hline&0&10&20\\\\\\hline&1&11&21\\\\\\hline&2&12&22\\\\\\hline&3&13&23\\\\\\hline\\hline&4&14&24\\\\\\hline\\end{tabular}\\end{document}"));
+test((' -tr -hc -hr -sr -sc -c_- -r_; -r_\'', '0-1-2-3-4;10-11-12-13-14\'20-21-22-23-24\'', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c||c|}\\hline&&&\\\\\\hline&0&10&20\\\\\\hline&1&11&21\\\\\\hline&2&12&22\\\\\\hline&3&13&23\\\\\\hline\\hline&4&14&24\\\\\\hline\\end{tabular}\\end{document}"));
+test((' -tr -hc -hr -sr -sc -c_- -r_;', '0-1-2-3-4;10-11-12-13-14;20-21-22-23-24;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c||c|}\\hline&&&\\\\\\hline&0&10&20\\\\\\hline&1&11&21\\\\\\hline&2&12&22\\\\\\hline&3&13&23\\\\\\hline\\hline&4&14&24\\\\\\hline\\end{tabular}\\end{document}"));
+test((' -tr -hc -hr -sr -sc -c_- -r_\'', '0-1-2-3-4\'10-11-12-13-14\'20-21-22-23-24\'', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c||c|}\\hline&&&\\\\\\hline&0&10&20\\\\\\hline&1&11&21\\\\\\hline&2&12&22\\\\\\hline&3&13&23\\\\\\hline\\hline&4&14&24\\\\\\hline\\end{tabular}\\end{document}"));
+test((' -tr -hc -hr -sr -sc -c_. -r_; -r_\'', '0.1.2.3.4\'10.11.12.13.14\'20.21.22.23.24;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c||c|}\\hline&&&\\\\\\hline&0&10&20\\\\\\hline&1&11&21\\\\\\hline&2&12&22\\\\\\hline&3&13&23\\\\\\hline\\hline&4&14&24\\\\\\hline\\end{tabular}\\end{document}"));
+test((' -tr -hc -hr -sr -sc -c_. -r_;', '0.1.2.3.4;10.11.12.13.14;20.21.22.23.24;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c||c|}\\hline&&&\\\\\\hline&0&10&20\\\\\\hline&1&11&21\\\\\\hline&2&12&22\\\\\\hline&3&13&23\\\\\\hline\\hline&4&14&24\\\\\\hline\\end{tabular}\\end{document}"));
+test((' -tr -hc -hr -sr -sc -c_. -r_\'', '0.1.2.3.4\'10.11.12.13.14\'20.21.22.23.24\'', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c||c|}\\hline&&&\\\\\\hline&0&10&20\\\\\\hline&1&11&21\\\\\\hline&2&12&22\\\\\\hline&3&13&23\\\\\\hline\\hline&4&14&24\\\\\\hline\\end{tabular}\\end{document}"));
+
 done_testing();
 #end of tests
 
-sub test{
-    my $out =remove_whitespace(perform_script(@_));
-    ok ($_[2] eq $out,"table = $_[1] with arguments = $_[0]");
+sub test {
+    ok $_[2] eq remove_whitespace(perform_script(@_)),"table = $_[1] with arguments = $_[0]";
 }
 
-sub remove_whitespace{
+sub remove_whitespace {
     $_[0] =~ s/\s//g;
     $_[0];
 }
-sub perform_script{
+
+sub perform_script {
     input_file($_[1]);
-    system($^X, 'src/LaTeX table generator.pl', set_array($_[0]));
+    system $^X, 'src/LaTeX table generator.pl', set_array($_[0]);
     load_output();
 }
-sub input_file{
+
+sub input_file {
     my $input;
-    open($input, '>', 'src/in.txt');
-    print $input join("\n",@_);
-    close ($input);
+    open $input, '>', 'src/in.txt';
+    print $input join "\n",@_;
+    close $input;
 }
-sub set_array{
+
+sub set_array {
     my @array = ();
     foreach my $i (split(" ",$_[0])){
         push @array,$i
     }
     @array;
 }
-sub load_output{
+
+sub load_output {
     my $input_file;
     open ($input_file, 'src/out.txt') or ok(0 eq 1,'fail');
-    my $data = join('', <$input_file>);
-    close($input_file);
+    my $data = join '', <$input_file>;
+    close $input_file;
     $data;
 }
