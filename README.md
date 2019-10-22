@@ -5,7 +5,7 @@ Proszę napisać skrypt do tworzenia tabelek w LaTeXu: z pliku z liczbami oddzie
 kolumn. Dokładać (włączane przez opcje) podsumowanie w wierszach, kolumnach, puste nagłówki wierszy
 i kolumn. Zapewnić możliwość obrócenia tabeli o 90 stopni (tzn. dane podane w pliku wierszami umieścić
 w kolumnach).
-##*Parametry wywołania skryptu*
+## *Parametry wywołania skryptu*
 * -tr transpozycja tabeli
 * nagłówki
     * -hc dla kolumn
@@ -18,12 +18,12 @@ w kolumnach).
   * -r=? dla wierszy gdzie ? to separator nieposiadający cyfry w swoim ciągu znaków
     
     separatory muszą być unikalne 
-##*Użycie*
+## *Użycie*
 Aby wygenerować tabelę w LaTeXie należy wywołać polecenie z głównego katalogu projektu:
 ```
 perl src/LaTeX table generator.pl -c=- -r=;
 ```
-##*Przykłady użycia*
+## *Przykłady użycia*
 
 plik wejściowy:
 ``` text
