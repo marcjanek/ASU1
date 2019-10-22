@@ -136,14 +136,14 @@ sub set_script_options {
             $header_col = 1;
         } elsif ($word eq '-tr') {
             $transposition = 1;
-        } elsif ($word =~ m/^-c_/) {#column separators
+        } elsif ($word =~ m/^-c=/) {#column separators
             my $temp = substr $word, 3;
             if(length(substr($word, 3)) == 0){
                 print "argument must contain separator after $word\n";
                 exit 0;
             }
             push @separators_col, $temp;
-        } elsif ($word =~ m/^-r_/) {#rows separators
+        } elsif ($word =~ m/^-r=/) {#rows separators
             my $temp = substr $word, 3;
             if (length($temp) == 0) {
                 print "argument must contain separator after $word\n";
