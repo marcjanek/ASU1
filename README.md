@@ -1,4 +1,4 @@
-#[ASU][Projekt 1][zadanie 8 - tabelki]
+# **[ASU][Projekt 1][zadanie 8 - tabelki]**
 ##Polecenie
 Proszę napisać skrypt do tworzenia tabelek w LaTeXu: z pliku z liczbami oddzielonymi jakimiś separatorami
 (spacje, nowe wiersze, średniki — zbiór sep. powinien być definiowalny) zrobić tabelkę o zadanej liczbie
