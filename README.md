@@ -18,12 +18,12 @@ w kolumnach).
   * -r=? dla wierszy gdzie ? to separator nieposiadający cyfry w swoim ciągu znaków
     
     separatory muszą być unikalne 
-## *Użycie*
+## *Uruchomienie*
 Aby wygenerować tabelę w LaTeXie należy wywołać polecenie z głównego katalogu projektu:
 ```
 perl src/LaTeX table generator.pl -c=- -r=;
 ```
-## *Przykłady użycia*
+## *Przykłady*
 
 plik wejściowy:
 ``` text
