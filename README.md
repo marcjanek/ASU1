@@ -21,7 +21,7 @@ w kolumnach).
 ## *Uruchomienie*
 Aby wygenerować tabelę w LaTeXie należy wywołać polecenie z głównego katalogu projektu:
 ```
-perl src/LaTeX table generator.pl -c=- -r=;
+perl src/LaTeX\ table\ generator.pl -c=- -r=\;
 ```
 ## *Przykłady*
 
@@ -32,21 +32,21 @@ plik wejściowy:
 *
     polecenie uruchamiające:
     ``` text
-    perl src/LaTeX table generator.pl -tr -hc -hr -sr -sc -c=- -c=. -r=; -r='
+    perl src/LaTeX\ table\ generator.pl -tr -hc -hr -sr -sc -c=- -c=. -r=\; -r=\'
     ```
     uzykana tabela:
     ![tabela 1](documentation/Zrzut%20ekranu%20z%202019-10-22%2021-07-58.png)
 *
     polecenie uruchamiające:
     ``` text
-    perl src/LaTeX table generator.pl -hc -hr -sc -c=- -c=. -r=; -r='
+    perl src/LaTeX\ table\ generator.pl -hc -hr -sc -c=- -c=. -r=\; -r=\'
     ```
     uzykana tabela:
     ![tabela 2](documentation/Zrzut%20ekranu%20z%202019-10-22%2021-13-05.png)
 *
     polecenie uruchamiające:
     ``` text
-    perl src/LaTeX table generator.pl -c=- -c=. -r=; -r='
+    perl src/LaTeX\ table\ generator.pl -c=- -c=. -r=\; -r=\'
     ```
     uzykana tabela:
     ![tabela 3](documentation/Zrzut%20ekranu%20z%202019-10-22%2021-16-34.png)
