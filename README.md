@@ -17,7 +17,7 @@ w kolumnach).
   * -c=? dla kolumn gdzie ? to separator nieposiadający cyfry w swoim ciągu znaków
   * -r=? dla wierszy gdzie ? to separator nieposiadający cyfry w swoim ciągu znaków
     
-    separatory muszą być unikalne 
+    separatory muszą być unikalne i mogą być tylko jednoznakowe. Liczba separatorów nie jest ograniczona
 ## *Uruchomienie*
 Aby wygenerować tabelę w LaTeXie należy wywołać polecenie z głównego katalogu projektu:
 ```

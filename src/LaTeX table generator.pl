@@ -141,12 +141,18 @@ sub set_script_options {
             if(length(substr($word, 3)) == 0){
                 print "argument must contain separator after $word\n";
                 exit 0;
+            } elsif (length($temp) > 1) {
+                print "separator must contain only one char\n";
+                exit 0;
             }
             push @separators_col, $temp;
         } elsif ($word =~ m/^-r=/) {#rows separators
             my $temp = substr $word, 3;
             if (length($temp) == 0) {
                 print "argument must contain separator after $word\n";
+                exit 0;
+            } elsif (length($temp) > 1) {
+                print "separator must contain only one char\n";
                 exit 0;
             }
             push @separators_row, $temp;
