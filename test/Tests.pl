@@ -24,10 +24,6 @@ test((' -hr -c=- -c=. -r=; -r=\' -in=src/in.txt -out=src/out.txt', '1;', "\\docu
 test((' -hc -c=- -c=. -r=; -r=\' -in=src/in.txt -out=src/out.txt', '1;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|}\\hline\\\\\\hline1\\\\\\hline\\end{tabular}\\end{document}"));
 test((' -c=- -c=. -r=; -r=\' -in=src/in.txt -out=src/out.txt', '1;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|}\\hline1\\\\\\hline\\end{tabular}\\end{document}"));
 
-
-
-
-
 test((' -tr -hc -hr -sr -sc -c=- -c=. -r=; -r=\' -in=src/in.txt -out=src/out.txt', '0-1-2-3-4;10-11-12-13-14;20-21-22-23-24;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c|c||c|}\\hline&&&&\\\\\\hline&0&10&20&30\\\\\\hline&1&11&21&33\\\\\\hline&2&12&22&36\\\\\\hline&3&13&23&39\\\\\\hline&4&14&24&42\\\\\\hline\\hline&10&60&110&180\\\\\\hline\\end{tabular}\\end{document}"));
 test((' -hc -hr -sr -sc -c=- -c=. -r=; -r=\' -in=src/in.txt -out=src/out.txt', '0-1-2-3-4;10-11-12-13-14;20-21-22-23-24;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c|c|c|c||c|}\\hline&&&&&&\\\\\\hline&0&1&2&3&4&10\\\\\\hline&10&11&12&13&14&60\\\\\\hline&20&21&22&23&24&110\\\\\\hline\\hline&30&33&36&39&42&180\\\\\\hline\\end{tabular}\\end{document}"));
 test((' -tr -hr -sr -sc -c=- -c=. -r=; -r=\' -in=src/in.txt -out=src/out.txt', '0-1-2-3-4;10-11-12-13-14;20-21-22-23-24;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c|c||c|}\\hline&0&10&20&30\\\\\\hline&1&11&21&33\\\\\\hline&2&12&22&36\\\\\\hline&3&13&23&39\\\\\\hline&4&14&24&42\\\\\\hline\\hline&10&60&110&180\\\\\\hline\\end{tabular}\\end{document}"));
@@ -61,13 +57,13 @@ test((' -hc -c=- -c=. -r=; -r=\' -in=src/in.txt -out=src/out.txt', '0-1-2-3-4;10
 test((' -tr -c=- -c=. -r=; -r=\' -in=src/in.txt -out=src/out.txt', '0-1-2-3-4;10-11-12-13-14;20-21-22-23-24;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c|}\\hline0&10&20\\\\\\hline1&11&21\\\\\\hline2&12&22\\\\\\hline3&13&23\\\\\\hline4&14&24\\\\\\hline\\end{tabular}\\end{document}"));
 test((' -c=- -c=. -r=; -r=\' -in=src/in.txt -out=src/out.txt', '0-1-2-3-4;10-11-12-13-14;20-21-22-23-24;', "\\documentclass{article}\\begin{document}\\begin{tabular}{|c|c|c|c|c|}\\hline0&1&2&3&4\\\\\\hline10&11&12&13&14\\\\\\hline20&21&22&23&24\\\\\\hline\\end{tabular}\\end{document}"));
 
-
 done_testing();
 #end of tests
 
 sub test {
     clear_output();
     ok $_[2] eq remove_whitespace(perform_script(@_)),"table = $_[1] with arguments = $_[0]";
+
 }
 
 sub remove_whitespace {
