@@ -18,7 +18,7 @@ set_script_options(@ARGV);
 valid_input_and_output();
 valid_separators();
 my @dataTable=load_data_from_file();
-valid_rows_size();
+valid_dataTable();
 @dataTable = transpose() if($transposition eq 1);
 save_data(create_output_rows());
 
@@ -106,7 +106,7 @@ sub transpose{
     @matrix;
 }
 
-sub valid_rows_size {
+sub valid_dataTable {
     if (@dataTable eq 0){
         print "table is empty, can't create LaTeX table\n";
         exit(0);
@@ -120,6 +120,12 @@ sub valid_rows_size {
                     ."\n";
                 exit 0;
             }
+            for my $j (0..@{$dataTable[$i]}-1) {
+                if(!($dataTable[$i][$j] =~ /^[0-9,.E]+$/)){
+                    print "table contains: $dataTable[$i][$j]. Only numbers are allowed\n";
+                    exit 0;
+                }
+            }
         }
     }
 }
@@ -129,8 +135,8 @@ sub load_data_from_file {
     open ($input_file, $input) or die("$! can\'t be opened\n");
     my $data = join '', <$input_file>;
     $data =~ s/\s//g;
-
-    my @separated_data_rows = split /[join('',@separators_row)]/, $data;
+    my $col_sep = join('', @separators_row);
+    my @separated_data_rows = split /[$col_sep]/, $data;
     my $separators_col_s = join '',@separators_col;
     my @table;
     for my $i (0..(@separated_data_rows-1)) {
