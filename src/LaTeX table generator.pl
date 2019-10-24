@@ -8,10 +8,14 @@ my $header_row = 0;
 my $header_col = 0;
 my $transposition = 0;
 
+my $input;
+my $output;
+
 my @separators_row = ();
 my @separators_col = ();
 
 set_script_options(@ARGV);
+valid_input_and_output();
 valid_separators();
 my @dataTable=load_data_from_file();
 valid_rows_size();
@@ -22,7 +26,7 @@ save_data(create_output_rows());
 
 sub save_data{
     my $output_file;
-    open $output_file, '>', 'src/out.txt';
+    open $output_file, '>', $output;
     print $output_file join "\n", @_;
     close $output_file;
 }
@@ -83,7 +87,7 @@ sub valid_rows_size {
 
 sub load_data_from_file {
     my $input_file;
-    open ($input_file, 'src/in.txt') or die("$! can\'t be opened\n");
+    open ($input_file, $input) or die("$! can\'t be opened\n");
     my $data = join '', <$input_file>;
     $data =~ s/\s//g;
 
@@ -123,6 +127,15 @@ sub valid_separators {
         exit 0;
     }
 }
+sub valid_input_and_output {
+    if (!defined($input)) {
+        print "arguments must contain input path\n";
+        exit 0;
+    } elsif (!defined($output)) {
+        print "arguments must contain output path\n";
+        exit 0;
+    }
+}
 
 sub set_script_options {
     foreach my $word (@_){
@@ -156,7 +169,28 @@ sub set_script_options {
                 exit 0;
             }
             push @separators_row, $temp;
-        } else {
+        } elsif ($word =~ m/^-in=/) {
+            my $temp = substr $word, 4;
+            if(length($temp) == 0){
+                print "argument must contain input path after $word\n";
+                exit 0;
+            } elsif (defined($input)) {
+                print "arguments must contain only one input path\n";
+                exit 0;
+            }
+            $input = $temp;
+        } elsif ($word =~ m/^-out=/) {
+            my $temp = substr $word, 5;
+            if(length($temp) == 0){
+                print "argument must contain output path after $word\n";
+                exit 0;
+            } elsif (defined($output)) {
+                print "arguments must contain only one output path\n";
+                exit 0;
+            }
+            $output = $temp;
+        }
+        else {
             print "$word is not acceptable as script argument\n";
             exit 0;
         }

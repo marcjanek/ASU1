@@ -14,14 +14,21 @@ w kolumnach).
     * -sc dla kolumn
     * -sr dla wierszy
 * separatory
-  * -c=? dla kolumn gdzie ? to separator nieposiadający cyfry w swoim ciągu znaków
-  * -r=? dla wierszy gdzie ? to separator nieposiadający cyfry w swoim ciągu znaków
+    * -c=? dla kolumn gdzie ? to separator nieposiadający cyfry w swoim ciągu znaków
+    * -r=? dla wierszy gdzie ? to separator nieposiadający cyfry w swoim ciągu znaków
     
     separatory muszą być unikalne i mogą być tylko jednoznakowe. Liczba separatorów nie jest ograniczona
+* ścieżki plików
+    * -in= dla ścieżki wejściowej
+    * -out= dla ścieżki wyjsciwej
+    
+    arguemnty -in= i -out= są obowiązkowe
+    
+    
 ## *Uruchomienie*
 Aby wygenerować tabelę w LaTeXie należy wywołać polecenie z głównego katalogu projektu:
 ```
-perl src/LaTeX\ table\ generator.pl -c=- -r=\;
+perl src/LaTeX\ table\ generator.pl -c=- -r=\; -in=src/in.txt -out=src/out.txt
 ```
 ## *Przykłady*
 
@@ -32,21 +39,21 @@ plik wejściowy:
 *
     polecenie uruchamiające:
     ``` text
-    perl src/LaTeX\ table\ generator.pl -tr -hc -hr -sr -sc -c=- -c=. -r=\; -r=\'
+    perl src/LaTeX\ table\ generator.pl -tr -hc -hr -sr -sc -c=- -c=. -r=\; -r=\' -in=src/in.txt -out=src/out.txt
     ```
     uzykana tabela:
     ![tabela 1](documentation/Zrzut%20ekranu%20z%202019-10-22%2021-07-58.png)
 *
     polecenie uruchamiające:
     ``` text
-    perl src/LaTeX\ table\ generator.pl -hc -hr -sc -c=- -c=. -r=\; -r=\'
+    perl src/LaTeX\ table\ generator.pl -hc -hr -sc -c=- -c=. -r=\; -r=\' -in=src/in.txt -out=src/out.txt
     ```
     uzykana tabela:
     ![tabela 2](documentation/Zrzut%20ekranu%20z%202019-10-22%2021-13-05.png)
 *
     polecenie uruchamiające:
     ``` text
-    perl src/LaTeX\ table\ generator.pl -c=- -c=. -r=\; -r=\'
+    perl src/LaTeX\ table\ generator.pl -c=- -c=. -r=\; -r=\' -in=src/in.txt -out=src/out.txt
     ```
     uzykana tabela:
     ![tabela 3](documentation/Zrzut%20ekranu%20z%202019-10-22%2021-16-34.png)
