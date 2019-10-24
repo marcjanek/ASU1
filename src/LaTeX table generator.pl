@@ -35,25 +35,64 @@ sub create_output_rows {
     my @rows;
     #set data rows and add header row
     for (my $idx = 0; $idx < @dataTable; $idx++) {
-        $rows[$idx+2]=($header_row eq 1 ? '& ' : '').join(' & ',@{$dataTable[$idx]}).' \\\\ \hline';
+        $rows[$idx+2] = ($header_row eq 1 ? '& ' : '').join(' & ',@{$dataTable[$idx]});
+        $rows[$idx+2] .= ' & '.sum_column_values($idx) if($summary_col eq 1);
+        $rows[$idx+2] .= ' \\\\ \hline';
     }
     #set header column
     if ($header_col eq 1) {
-        $rows[1] = ($header_row eq 1 ? '& ' : '') . "& " x (@{$dataTable[0]} - 1) . '\\\\ \hline';
+        $rows[1] = ($header_row eq 1 ? '& ' : '') . "& " x (@{$dataTable[0]} - 1 + ($summary_col eq 1 ? 1:0)) . '\\\\ \hline';
     }
     #set begins
     $rows[0] = '\documentclass{article}\begin{document}\begin{tabular}{';
-    $rows[0] .= ' |' if ($header_row eq 1 or (@{$dataTable[0]} - 1 + ($header_row eq 1 ? 1:0)) ne 0);
-    $rows[0] .= ' c |' x (@{$dataTable[0]} - 1 + ($header_row eq 1 ? 1:0));
-    $rows[0] .='|' if (($summary_col eq 1 ) or ((@{$dataTable[0]} -1 + ($header_row eq 1 ? 1:0) ) eq 0));
-    $rows[0] .= ' c |}';
+    if ($header_row eq 1){
+        $rows[0] .= ' | c |';
+    } else {
+        $rows[0] .= ' | ';
+    }
+    $rows[0] .= ' c |' x (@{$dataTable[0]});
+
+
+    $rows[0] .='| c |' if ($summary_col eq 1);
+    $rows[0] .='}';
     $rows[0] .= ' \hline' if ($header_col eq 1);
     #set summary row
-    $rows[@dataTable] .= ' \hline' if($summary_row eq 1);
+    $rows[@dataTable+2] = '';
+    if ($summary_row eq 1) {
+        $rows[@dataTable + 2] .= '\hline ';
+        $rows[@dataTable + 2] .= '& ' if($header_row eq 1);
+        $rows[@dataTable + 2] .=(join ' & ', sum_row_values())
+            .' \\\\ \hline';
+    }
     #set ends
-    $rows[@dataTable+2] = '\end{tabular}\end{document}';
+    $rows[@dataTable+3] = '\end{tabular}\end{document}';
     $rows[1] = '\hline' if(!defined $rows[1]);
     return @rows;
+}
+sub sum_row_values {
+    my @array = ();
+    for my $row (0..@{$dataTable[0]}-1) {
+        my $sum = 0;
+        for my $col (0..@dataTable-1) {
+            $sum += $dataTable[$col][$row];
+        }
+        push @array, $sum;
+    }
+    if ($summary_col eq 1) {
+        my $sum = 0;
+        foreach (@array) {
+            $sum += $_;
+        }
+        push @array, $sum;
+    }
+    @array;
+}
+sub sum_column_values {
+    my $sum = 0;
+    for my $col (0..@{$dataTable[$_[0]]}-1) {
+        $sum += $dataTable[$_[0]][$col];
+    }
+    $sum;
 }
 
 sub transpose{
